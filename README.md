@@ -5,7 +5,9 @@
     
     python3 -e file_to_save_ecnrypted_message file_with_plain_text_message  
 
-    python3 -d file_with_ecnrypted_message file_to_save_plain_text_message
+    python3 -d file_with_ecnrypted_message file_to_save_plain_text_message  
+    
+    -e or -d to indicate whether to encrypt or decrypt the file  
 
  This project helps in encrypting data with a public key and decrypting with private key
 
@@ -13,7 +15,8 @@
 
 When the script is run, it expects three command-line arguments:
 
--e or -d to indicate whether to encrypt or decrypt the file
+
+
 The path to the input file  
 
 The path to the output file  
