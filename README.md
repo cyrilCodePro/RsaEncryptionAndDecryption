@@ -1,5 +1,6 @@
 # RsaEncryptionAndDecryption
-**python3 -e file_to_save_ecnrypted message file_with_plain_text_message
+**python3 -e file_to_save_ecnrypted message file_with_plain_text_message  **
+
  This project helps in encrypting data with a public key and decrypting with private key
 
  It uses the Crypto library to generate RSA keys, encrypt data with AES, and encrypt the AES key with RSA. The resulting encrypted data and keys are then saved to files.
