@@ -6,12 +6,15 @@
 When the script is run, it expects three command-line arguments:
 
 -e or -d to indicate whether to encrypt or decrypt the file
-The path to the input file
-The path to the output file
+The path to the input file  
+
+The path to the output file  
+
 If the operation argument is -e, the script generates RSA keys, encrypts the input file with AES, and then encrypts the AES key with RSA. The encrypted data is saved to the output file.
 
 If the operation argument is -d, the script decrypts the AES key using the private RSA key, then uses the decrypted key to decrypt the input file with AES. The decrypted data is saved to the output file.
-
+  
+  
 If the operation argument is not recognized, the script prints an error message.
 
 Note that the script uses a fixed AES key (b'Sixteen byte key'), which is not secure. In a real application, you would want to generate a random key for each encryption operation.
