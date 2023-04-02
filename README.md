@@ -3,9 +3,9 @@
     To run
     
     
-python3 -e file_to_save_ecnrypted_message file_with_plain_text_message  
+    python3 -e file_to_save_ecnrypted_message file_with_plain_text_message  
 
-python3 -d file_with_ecnrypted_message file_to_save_plain_text_message
+    python3 -d file_with_ecnrypted_message file_to_save_plain_text_message
 
  This project helps in encrypting data with a public key and decrypting with private key
 
