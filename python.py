@@ -1,29 +1,46 @@
 from Crypto.PublicKey import RSA
-from Crypto.Cipher import PKCS1_v1_5
-import base64
-
-def encryptdata(message):
-   key_text = open("publicKey.pem", "rb").read()
-
-    # Import key using RSA module
-   public_key = RSA.importKey(key_text)
-
-    # Generate a cypher using the PKCS1.5 standard
-   cipher = PKCS1_v1_5.new(public_key)
-
-    # Encrypy as bytes
-   encrypted_bytes = cipher.encrypt(message)
-
-   return base64.b64encode(encrypted_bytes)
-
-def decryptdata(ciphertext):
-    key_text=open("privateKey.pem","rb").read()
-    private_key=RSA.importKey(key_text)
-    cipher = PKCS1_v1_5.new(private_key)
-    text=base64.b64decode(ciphertext)
-    return cipher.decrypt(text,"decryption error")
+from Crypto.Cipher import AES, PKCS1_OAEP
+from Crypto.Util import Padding
 
 
-data=encryptdata(b"The cool code")
-test=decryptdata(data)
-print(test)
+class AESEncryption:
+    def __init__(self) -> None:
+        # generate AES key
+        self.aes_key = b'Sixteen byte key'
+        # create AES cipher in CBC mode with an initialization vector of all zeroes 
+        self.cipher_aes =cipher_aes = AES.new(key=self.aes_key, mode=AES.MODE_CBC, iv=b'\x00'*16)
+    # generate RSA key pair and write the keys to files
+    def createKeys(self):
+        key = RSA.generate(2048)
+        public_key = key.publickey().export_key("PEM")
+        private_key = key.export_key("PEM")
+        with open("publicKey.pem", "wb") as f:
+            f.write(public_key)
+        with open("privateKey.pem", "wb") as f:
+            f.write(private_key)
+    def utilities(self):
+        pass
+
+    def encrypt(self):
+        # encrypt the data with AES
+        data = b'This is some data to encrypt'
+        padded_data = Padding.pad(data, AES.block_size)
+        encrypted_data = self.cipher_aes.encrypt(padded_data)
+        # encrypt the AES key with RSA
+        public_key = RSA.import_key(open("publicKey.pem").read())
+        cipher_rsa = PKCS1_OAEP.new(public_key)
+        encrypted_aes_key = cipher_rsa.encrypt(self.aes_key)
+
+    
+    def decrypt(self):
+        # decrypt the AES key with RSA
+        private_key = RSA.import_key(open("privateKey.pem").read())
+        cipher_rsa = PKCS1_OAEP.new(private_key)
+        encrypted_aes_key = cipher_rsa.encrypt(self.aes_key)
+
+        decrypted_aes_key = cipher_rsa.decrypt(encrypted_aes_key)
+        # decrypt the data with AES
+        cipher_aes = AES.new(key=decrypted_aes_key, mode=AES.MODE_CBC, iv=b'\x00'*16)
+        decrypted_data = Padding.unpad(cipher_aes.decrypt(b'\x9e#\x8d\x0c\xd0\xe5.\x7f\xf6\x185\xdc\xc3cX\xfe"\x14\xc7\xddx\r7D\xd2J\x8aW4[K\x01'), AES.block_size)
+        print(decrypted_data)
+
